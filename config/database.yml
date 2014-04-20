@@ -1,0 +1,19 @@
+admin_development:
+  adapter: postgresql
+  database: didyou
+  username: dev
+  password: bqNhcjnX
+  processes: 2
+  host: localhost
+  port: 5432
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  adapter: postgresql
+  database: didyou_test
+  username: dev
+  password: bqNhcjnX
+  host: localhost
+
