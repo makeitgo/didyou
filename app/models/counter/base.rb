@@ -18,7 +18,7 @@ module Counter
 
     def summary_count
       post
-      result['sum'].to_i
+      result['sum'].to_i if success?
     end
 
     def post( item = nil, operator = '/', by = nil )
@@ -34,6 +34,8 @@ module Counter
         @error = e.message
       end
     end
+
+    private 
 
     def handle_response(http_response)
       if http_response.present?
