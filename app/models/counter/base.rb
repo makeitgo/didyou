@@ -22,13 +22,14 @@ module Counter
     end
 
     def post( item = nil, operator = '/', by = nil )
+      return unless ['/', '-', '+'].include?(operator)
       http = HTTPClient.new
       url = "http://count.io/vb/#{group}/"
       if item.present?
         url += "#{item}#{operator}" 
       end
       begin
-        handle_response(http.post url, by)
+        handle_response(http.post url, by.to_i)
       rescue Exception => e
         @error = e.message
       end
