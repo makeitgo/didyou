@@ -9,7 +9,14 @@ class CounterItemTest < ActiveSupport::TestCase
   end
 
   test "count success" do
-    item = Counter::Item.new("test_group", "test")
-    assert(item.count.present?)
+    item = Counter::Item.new("tests", "tests")
+    puts item.count
+    puts item.response
   end
+
+  test "count fail" do
+    item = Counter::Item.new("test_group", "item")
+    assert(item.count.nil?)
+  end
+
 end  
