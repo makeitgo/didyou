@@ -5,11 +5,12 @@ module Counter
     attr_accessor :body
     attr_accessor :result
     attr_accessor :group
-    attr_reader :error
+    attr_reader :errors
     
     def initialize(group)
-      @group = group
+      @group = group 
       @success = false
+      @errors = []
     end
 
     def success?
@@ -22,7 +23,7 @@ module Counter
     end
 
     def post( item = nil, operator = '/', by = nil )
-      return unless ['/', '-', '+'].include?(operator)
+      return unless validate_post_arguments?(group, item, operator, by)
       http = HTTPClient.new
       url = "http://count.io/vb/#{group}/"
       if item.present?
@@ -31,8 +32,16 @@ module Counter
       begin
         handle_response(http.post url, by.to_i)
       rescue Exception => e
-        @error = e.message
+        @errors << e.message
       end
+    end
+
+    def validate_post_arguments?(group, item, operator, by)
+      @errors << "Group name can not contain 'group'" if group.include?('group')
+      @errors << "Item can not contain 'item'" if item.present? && item.include?('item')
+      @errors << "/ + and - are the only valid operators" if operator.present? && !['/', '-', '+'].include?(operator)
+      @errors << "By must be an integer" if by.present? && !by.is_a?(Numeric)
+      @errors.empty?
     end
 
     private 
