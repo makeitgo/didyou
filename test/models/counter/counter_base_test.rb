@@ -27,6 +27,19 @@ class CounterBaseTest < ActiveSupport::TestCase
     assert(counter.result['sum'].present?)
   end
 
+  test "summary_count" do
+    counter = Counter::Base.new("test")
+    counter.post
+    assert_equal(true, counter.success?)
+    assert(counter.summary_count.present?)
+  end
+
+  test "summary_count not successful" do
+    counter = Counter::Base.new("")
+    puts counter.summary_count
+    assert_equal(false, counter.success?)
+  end
+
   test "post group item" do
     counter = Counter::Base.new("test")
     counter.post('test')
