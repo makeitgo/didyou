@@ -89,4 +89,15 @@ class CounterBaseTest < ActiveSupport::TestCase
     counter.post('test', 'bad')
     assert_equal(false, counter.success?)
   end
+
+  test "validate post arguments" do
+    counter = Counter::Base.new("test")
+    assert(counter.validate_post_arguments?('good', 'good', '/', 0))
+    assert_equal(0, counter.errors.size)
+
+    assert(!counter.validate_post_arguments?('group', 'item', '$', 'a'))
+    assert_equal(4, counter.errors.size)
+  end
+
+
 end
