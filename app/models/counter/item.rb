@@ -10,7 +10,7 @@ module Counter
 
     def count
       post(name)
-      @result['count'].to_i
+      @result['count'].to_i if success?
     end
 
     def increment(by = nil)
