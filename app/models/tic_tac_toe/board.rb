@@ -12,8 +12,40 @@ class TicTacToe::Board
     @current_board = board
   end
 
-  def closed?
+  def make_move(player, position)
 
+  end
+
+  def closed?
+    open_positions.count <= 1 || winner?
+  end
+
+  def open_positions
+    positions_by_state(:open)
+  end
+
+  def position_open(check_for_position)
+    result = false
+    positions_by_state.each do |position|
+      result = true if position[:row] == check_for_position[:row] &&
+        position[:cell] == check_for_position[:cell]
+      break if result
+    end
+    result
+  end
+
+  def positions_for_player(player)
+    positions_by_state(player)
+  end
+
+  def positions_by_state(state)
+    positions_in_state = []
+    current_board.each do |row_num, cells|
+      cells.each do |cell_num, contents|
+        positions_in_state << {row: row_num, cell: cell_num} if contents == state
+      end
+    end
+    positions_in_state
   end
 
   def winner?
