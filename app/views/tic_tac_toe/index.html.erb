@@ -1,26 +1,44 @@
-<%= image_tag "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKT1QSqwg4TRvW3b1WOpLInwsLZu-oxu1phij6S2ZFptd9gy-yVg" %>
+<!-- <%= image_tag "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKT1QSqwg4TRvW3b1WOpLInwsLZu-oxu1phij6S2ZFptd9gy-yVg" %>
 <%= image_tag "http://1.bp.blogspot.com/-8MPCZ3b2Szg/UB1z3t6Pn7I/AAAAAAAAAAs/QDY4hhVQ5IU/s220/redX2.png" %>
-
+ -->
 <div id="surrounding">
   <div class="rowhead">
     <div class="box row1 col1 position_open" onclick="do_me(this)"></div>
-    <div class="box row1 col2 position_x"></div>
-    <div class="box row1 col3 position_x"></div>
+    <div class="box row1 col2 position_open" onclick="do_me(this)"></div>
+    <div class="box row1 col3 position_open" onclick="do_me(this)"></div>
   </div>
   <div class="rowhead">
-    <div class="box row2 col1 position_o"></div>
-    <div class="box row2 col2 position_open"></div>
-    <div class="box row2 col3 position_open"></div>
+    <div class="box row2 col1 position_open" onclick="do_me(this)"></div>
+    <div class="box row2 col2 position_open" onclick="do_me(this)"></div>
+    <div class="box row2 col3 position_open" onclick="do_me(this)"</div>
   </div>
   <div class="rowhead">
-    <div class="box row3 col1 position_o"></div>
-    <div class="box row3 col2 position_open"></div>
-    <div class="box row3 col3 position_open"></div>
+    <div class="box row3 col1 position_open" onclick="do_me(this)"></div>
+    <div class="box row3 col2 position_open" onclick="do_me(this)"></div>
+    <div class="box row3 col3 position_open" onclick="do_me(this)"></div>
   </div>
 </div>
 
 <script>
+
+  var players_turn = 'x';
+
+
   function do_me(me) {
-    alert(me.class);
+    if(me.classList.contains('position_open')) {
+      me.classList.remove('position_open');
+      if(players_turn == 'x') {
+        me.classList.add('position_x');
+        players_turn = 'o';
+      } else {
+        me.classList.add('position_o');
+        players_turn = 'x';
+      }
+      alert('changed');
+    } else {
+      alert(me.classList);
+    }
+
+
   }
 </script>
