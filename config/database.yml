@@ -1,4 +1,4 @@
-admin_development:
+development:
   adapter: postgresql
   database: didyou
   username: dev
@@ -16,4 +16,3 @@ test:
   username: dev
   password: bqNhcjnX
   host: localhost
-
