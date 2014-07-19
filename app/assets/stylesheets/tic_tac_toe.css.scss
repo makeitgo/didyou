@@ -2,19 +2,62 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.x_cell_taken{
+.x_position_taken {
+  background-image: url("http://1.bp.blogspot.com/-8MPCZ3b2Szg/UB1z3t6Pn7I/AAAAAAAAAAs/QDY4hhVQ5IU/s220/redX2.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.position_open {
 
 }
 
-.cell_open {
-
+.o_position_taken {
+  background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKT1QSqwg4TRvW3b1WOpLInwsLZu-oxu1phij6S2ZFptd9gy-yVg");
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
-.o_cell_taken {
+
+td {
+  border-right: 1px solid #000;
+  border-bottom: 1px solid #000;
+  height: 250px;
+  width: 250px;
   margin: 0;
   padding: 0;
-  height: 200;
-  width: 200;
-  display: block;
-  background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKT1QSqwg4TRvW3b1WOpLInwsLZu-oxu1phij6S2ZFptd9gy-yVg") ;
+}
+
+td:last-child {
+  border-right: 0;
+}
+
+td.bottomrow {
+  border-bottom: 0;
+}
+
+/* Div style */
+
+div {
+  border-right: 1px solid #000;
+  border-bottom: 1px solid #000;
+  height: 250px;
+  width: 250px;
+  margin: 0;
+  padding: 0;
+  float: left;
+}
+
+div.rowhead {
+  float: center;
+  width: 753px;
+  border: 0;
+}
+
+div.col3 {
+  border-right: 0;
+}
+
+div.row3 {
+  border-bottom: 0;
 }
