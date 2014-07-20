@@ -10,7 +10,7 @@ class TicTacToe::Board
   attr_accessor :current_board
   attr_accessor :winner
 
-  def initialize(board = STARTING_BOARD)
+  def initialize(board)
     @current_board = board
   end
 
@@ -58,7 +58,7 @@ class TicTacToe::Board
     ['0', '1', '2'].each do |row|
       if current_board[row][0] != OPEN_POSITION && current_board[row][0] != OPEN_POSITION && current_board[row][0] != OPEN_POSITION
         if current_board[row][0] == current_board[row][1] && current_board[row][0] == current_board[row][2]
-          set_winner('down', current_board[row][0])
+          set_winner('across', current_board[row][0])
           break
         end
       end
@@ -83,8 +83,8 @@ class TicTacToe::Board
       if current_board['0'][0] == current_board['1'][1] && current_board['0'][0] == current_board['2'][2]
         set_winner('diagnal_right', current_board['0'][0])
       end
-    elsif current_board['0'][2] != OPEN_POSITION && current_board['2'][2] != OPEN_POSITION && current_board['2'][0] != OPEN_POSITION
-      if current_board['0'][1] == current_board['1'][1] && current_board['0'][2] == current_board['2'][0]
+    elsif current_board['0'][2] != OPEN_POSITION && current_board['1'][1] != OPEN_POSITION && current_board['2'][0] != OPEN_POSITION
+      if current_board['0'][2] == current_board['1'][1] && current_board['0'][2] == current_board['2'][0]
         set_winner('diagnal_left', current_board['0'][2])
       end
     end
@@ -94,7 +94,5 @@ class TicTacToe::Board
   def set_winner(direction, player)
     self.winner = {'direction' => direction, 'player' => player}
   end
-
-
 
 end
