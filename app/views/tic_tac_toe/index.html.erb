@@ -3,40 +3,50 @@
  -->
 <div id="surrounding">
   <div class="rowhead">
-    <div class="box row1 col1 position_open" onclick="do_me(this)"></div>
-    <div class="box row1 col2 position_open" onclick="do_me(this)"></div>
-    <div class="box row1 col3 position_open" onclick="do_me(this)"></div>
+    <div class="box row1 col1 position_open" onclick="do_me(this,0,0)"></div>
+    <div class="box row1 col2 position_open" onclick="do_me(this,0,1)"></div>
+    <div class="box row1 col3 position_open" onclick="do_me(this,0,2)"></div>
   </div>
   <div class="rowhead">
-    <div class="box row2 col1 position_open" onclick="do_me(this)"></div>
-    <div class="box row2 col2 position_open" onclick="do_me(this)"></div>
-    <div class="box row2 col3 position_open" onclick="do_me(this)"</div>
+    <div class="box row2 col1 position_open" onclick="do_me(this,1,0)"></div>
+    <div class="box row2 col2 position_open" onclick="do_me(this,1,1)"></div>
+    <div class="box row2 col3 position_open" onclick="do_me(this,1,2)"></div>
   </div>
   <div class="rowhead">
-    <div class="box row3 col1 position_open" onclick="do_me(this)"></div>
-    <div class="box row3 col2 position_open" onclick="do_me(this)"></div>
-    <div class="box row3 col3 position_open" onclick="do_me(this)"></div>
+    <div class="box row3 col1 position_open" onclick="do_me(this,2,0)"></div>
+    <div class="box row3 col2 position_open" onclick="do_me(this,2,1)"></div>
+    <div class="box row3 col3 position_open" onclick="do_me(this,2,2)"></div>
   </div>
 </div>
 
 <script>
 
   var players_turn = 'x';
+  var data = {'state':{
+    'dave_turn':{'row':'0','cell':'0'},
+    'hal_turn':{'row':'0','cell':'0'}
+  },
+  'game_board':[
+    ['0','0','0'],
+    ['0','0','0'],
+    ['0','0','0']
+  ]}
 
-
-  function do_me(me) {
+  function do_me(me, row, cell) {
     if(me.classList.contains('position_open')) {
       me.classList.remove('position_open');
       if(players_turn == 'x') {
         me.classList.add('position_x');
+        data.game_board[row][cell] = 'x'
         players_turn = 'o';
       } else {
         me.classList.add('position_o');
+        data.game_board[row][cell] = 'o'
         players_turn = 'x';
       }
-      alert('changed');
+      alert(data.game_board);
     } else {
-      alert(me.classList);
+      alert('not a valid move');
     }
 
 
