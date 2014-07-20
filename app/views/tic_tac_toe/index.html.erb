@@ -15,7 +15,7 @@
   <div class="rowhead">
     <div class="box row3 col1 position_open" onclick="do_me(this,2,0)"></div>
     <div class="box row3 col2 position_open" onclick="do_me(this,2,1)"></div>
-    <div class="box row3 col3 position_open" onclick="do_me(this,2,2)"></div>
+    <div class="box row3 col3 position_open" onclick="call_server()"></div>
   </div>
 </div>
 
@@ -50,5 +50,16 @@
     }
 
 
+  }
+
+  function call_server() {
+    $.ajax({
+      dataType: "json",
+      url: '/tic_tac_toe/turn',
+      data: data,
+      success: function() {
+        alert('success');
+      }
+    });
   }
 </script>
