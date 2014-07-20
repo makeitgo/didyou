@@ -3,55 +3,95 @@
  -->
 <div id="surrounding">
   <div class="rowhead">
-    <div class="box row1 col1 position_open" onclick="do_me(this,0,0)"></div>
-    <div class="box row1 col2 position_open" onclick="do_me(this,0,1)"></div>
-    <div class="box row1 col3 position_open" onclick="do_me(this,0,2)"></div>
+    <div class="box row0 col0 position_open" onclick="daves_move(this,'0','0');"></div>
+    <div class="box row0 col1 position_open" onclick="daves_move(this,'0','1')"></div>
+    <div class="box row0 col2 position_open" onclick="daves_move(this,'0','2')"></div>
   </div>
   <div class="rowhead">
-    <div class="box row2 col1 position_open" onclick="do_me(this,1,0)"></div>
-    <div class="box row2 col2 position_open" onclick="do_me(this,1,1)"></div>
-    <div class="box row2 col3 position_open" onclick="do_me(this,1,2)"></div>
+    <div class="box row1 col0 position_open" onclick="daves_move(this,'1','0')"></div>
+    <div class="box row1 col1 position_open" onclick="daves_move(this,'1','1')"></div>
+    <div class="box row1 col2 position_open" onclick="daves_move(this,'1','2')"></div>
   </div>
   <div class="rowhead">
-    <div class="box row3 col1 position_open" onclick="do_me(this,2,0)"></div>
-    <div class="box row3 col2 position_open" onclick="do_me(this,2,1)"></div>
-    <div class="box row3 col3 position_open" onclick="call_server()"></div>
+    <div class="box row2 col0 position_open" onclick="daves_move(this,'2','0')"></div>
+    <div class="box row2 col1 position_open" onclick="daves_move(this,'2','1')"></div>
+    <div class="box row2 col2 position_open" onclick="daves_move(this,'2','2')"></div>
   </div>
 </div>
 
 <script>
 
   var players_turn = 'x';
-  var data = {'state':{
+  var x_player = 'dave_player';
+  var o_player = 'hal_player';
+  var data = {
     'dave_player':{'player':'x','row':'0','cell':'0'},
-    'hal_player':{'player':'o','row':'0','cell':'0'}
-  },
-  'game_board':[
-    ['0','0','0'],
-    ['0','0','0'],
-    ['0','0','0']
-  ]}
+    'hal_player': {'player':'o', 'row':'0','cell':'0'},
+    'result':{
+      'winner':false,
+      'game_over':false,
+      'valid':'blob'
+    },
+    'game_board':[
+      ['0','0','0'],
+      ['0','0','0'],
+      ['0','0','0']
+    ]};
 
-  function do_me(me, row, cell) {
-    if(me.classList.contains('position_open')) {
-      me.classList.remove('position_open');
-      if(players_turn == 'x') {
-        me.classList.add('position_x');
-        data.game_board[row][cell] = 'x';
-        call_server();
-        players_turn = 'o';
-      } else {
-        me.classList.add('position_o');
-        data.game_board[row][cell] = 'o';
-        call_server();
-        players_turn = 'x';
-      }
-      alert(data.game_board);
+    var return_data_tmp;
+
+  function second() {
+    alert(data['result']['valid']);
+  }
+
+  function daves_move(element, row, cell) {
+    console.log('100');
+    if(element.classList.contains('position_open')) {
+      console.log('200');
+      data['dave_player']['row'] = row
+      data['dave_player']['cell'] = cell
+      call_server();
     } else {
       alert('not a valid move');
     }
+  }
 
+  function handle_move(return_data) {
+    if(return_data['result']['valid']) {
+      var row = return_data['dave_player']['row'];
+      var cell = return_data['dave_player']['cell'];
+      var element = get_element(row, cell);
+      set_move_on_board(element, row, cell);
 
+      row = return_data['hal_player']['row'];
+      cell = return_data['hal_player']['cell'];
+      element = get_element(row, cell);
+      set_move_on_board(element, row, cell);
+    }
+  }
+
+  function get_element(row, cell) {
+    var selector = ".row" + row + ".col" + cell;
+    return $(selector)[0];
+  }
+
+  function hals_move(row, cell) {
+    var selector = ".row" + row + ".col" + cell;
+    var element = $(selector)[0];
+    set_move_on_board(element, row, cell);
+  }
+
+  function set_move_on_board(element, row, cell) {
+    if(players_turn == 'x') {
+      element.classList.remove('position_open');
+      element.classList.add('position_x');
+      data.game_board[row][cell] = 'x';
+      players_turn = 'o';
+    } else {
+      element.classList.add('position_o');
+      data.game_board[row][cell] = 'o';
+      players_turn = 'x';
+    }
   }
 
   function call_server() {
@@ -59,13 +99,10 @@
       dataType: "json",
       url: '/tic_tac_toe/turn',
       data: data,
-      success: function(data) {
-        alert(data['fred']);
+      success: function(return_data) {
+        data = return_data;
+        handle_move(return_data);
       }
-    })
-    .done(function(data) {
-      alert(data['me']);
-    })
-    ;
+    });
   }
 </script>

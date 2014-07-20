@@ -68,8 +68,8 @@ class TicTacToe::Board
 
   def winner_down?
     (0..2).each do |cell|
-      if current_board['1'][cell] != OPEN_POSITION && current_board['2'][cell] != OPEN_POSITION && current_board['3'][cell] != OPEN_POSITION
-        if current_board['1'][cell] == current_board['2'][cell] && current_board['1'][cell] == current_board['3'][cell]
+      if current_board['0'][cell] != OPEN_POSITION && current_board['1'][cell] != OPEN_POSITION && current_board['2'][cell] != OPEN_POSITION
+        if current_board['0'][cell] == current_board['1'][cell] && current_board['0'][cell] == current_board['2'][cell]
           set_winner('down', current_board['1'][cell])
           break
         end
@@ -79,13 +79,13 @@ class TicTacToe::Board
   end
 
   def winner_diaginal?
-    if current_board['1'][1] != OPEN_POSITION && current_board['2'][2] != OPEN_POSITION && current_board['3'][3] != OPEN_POSITION
-      if current_board['1'][1] == current_board['2'][2] && current_board['1'][1] == current_board['3'][3]
-        set_winner('diagnal_right', current_board['1'][1])
+    if current_board['0'][0] != OPEN_POSITION && current_board['1'][1] != OPEN_POSITION && current_board['2'][2] != OPEN_POSITION
+      if current_board['0'][0] == current_board['1'][1] && current_board['0'][0] == current_board['2'][2]
+        set_winner('diagnal_right', current_board['0'][0])
       end
-    elsif current_board['1'][3] != OPEN_POSITION && current_board['2'][2] != OPEN_POSITION && current_board['3'][1] != OPEN_POSITION
-      if current_board['1'][3] == current_board['2'][2] && current_board['1'][3] == current_board['3'][1]
-        set_winner('diagnal_left', current_board['1'][3])
+    elsif current_board['0'][2] != OPEN_POSITION && current_board['2'][2] != OPEN_POSITION && current_board['2'][0] != OPEN_POSITION
+      if current_board['0'][1] == current_board['1'][1] && current_board['0'][2] == current_board['2'][0]
+        set_winner('diagnal_left', current_board['0'][2])
       end
     end
     winner.present?
