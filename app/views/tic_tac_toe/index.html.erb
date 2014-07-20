@@ -23,8 +23,8 @@
 
   var players_turn = 'x';
   var data = {'state':{
-    'dave_turn':{'row':'0','cell':'0'},
-    'hal_turn':{'row':'0','cell':'0'}
+    'dave_player':{'player':'x','row':'0','cell':'0'},
+    'hal_player':{'player':'o','row':'0','cell':'0'}
   },
   'game_board':[
     ['0','0','0'],
@@ -37,11 +37,13 @@
       me.classList.remove('position_open');
       if(players_turn == 'x') {
         me.classList.add('position_x');
-        data.game_board[row][cell] = 'x'
+        data.game_board[row][cell] = 'x';
+        call_server();
         players_turn = 'o';
       } else {
         me.classList.add('position_o');
-        data.game_board[row][cell] = 'o'
+        data.game_board[row][cell] = 'o';
+        call_server();
         players_turn = 'x';
       }
       alert(data.game_board);
@@ -57,9 +59,13 @@
       dataType: "json",
       url: '/tic_tac_toe/turn',
       data: data,
-      success: function() {
-        alert('success');
+      success: function(data) {
+        alert(data['fred']);
       }
-    });
+    })
+    .done(function(data) {
+      alert(data['me']);
+    })
+    ;
   }
 </script>
