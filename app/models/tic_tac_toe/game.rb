@@ -21,13 +21,15 @@ class TicTacToe::Game
   end
 
   def computer_move(action)
-    open_position = game_board.open_positions[0]
+    open_position = best_computer_position
     position = {'row' => open_position[:row], 'cell' => open_position[:cell]}
     player = action['player']
+    return_action = {'player' => player}
     if valid_move?(player, position)
       game_board.set_position(player, position)
+      return_action.merge!(position)
     end
-    {'player' => player}.merge position
+    return_action
   end
 
   def winner
@@ -45,14 +47,19 @@ class TicTacToe::Game
     false
   end
 
+  private
+
+  def valid_move?(player, position)
+    players_move?(player) && game_board.position_open(position)
+  end
+
   def move_difference
     x = game_board.positions_for_player(PLAYER_X)
     o = game_board.positions_for_player(PLAYER_O)
     (x.count - o.count)
   end
 
-  def valid_move?(player, position)
-    players_move?(player) && game_board.position_open(position)
+  def best_computer_position
+    game_board.open_positions[0]
   end
-
 end
