@@ -15,6 +15,10 @@ class TicTacToe::Game
     end
   end
 
+  def winner
+    game_board.winner if game_over?
+  end
+
   def game_over?
     game_board.closed?
   end

@@ -50,15 +50,11 @@ class TicTacToe::Board
     positions_in_state
   end
 
-  def have_a_winner?
-    winner.present?
-  end
-
   def winner?
-    winner_accross? || winner_down? || winner_diaginal?
+    winner_across? || winner_down? || winner_diaginal?
   end
 
-  def winner_accross?
+  def winner_across?
     ['0', '1', '2'].each do |row|
       if current_board[row][0] != OPEN_POSITION && current_board[row][0] != OPEN_POSITION && current_board[row][0] != OPEN_POSITION
         if current_board[row][0] == current_board[row][1] && current_board[row][0] == current_board[row][2]
@@ -67,7 +63,7 @@ class TicTacToe::Board
         end
       end
     end
-    have_a_winner?
+    winner.present?
   end
 
   def winner_down?
@@ -79,7 +75,7 @@ class TicTacToe::Board
         end
       end
     end
-    have_a_winner?
+    winner.present?
   end
 
   def winner_diaginal?
@@ -92,7 +88,7 @@ class TicTacToe::Board
         set_winner('diagnal_left', current_board['1'][3])
       end
     end
-    have_a_winner?
+    winner.present?
   end
 
   def set_winner(direction, player)

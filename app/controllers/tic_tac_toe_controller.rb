@@ -3,6 +3,7 @@ class TicTacToeController < ApplicationController
   end
 
   def turn
+
     puts '@' * 20
     puts params['game_board']
     puts '@' * 20
