@@ -32,10 +32,11 @@ module TicTacToe
 
     def check_positions(parent_raw_board, board_player, positions, parent_position = nil)
       positions.each do |position|
-        position[:player] = board_player
-        position[:parent] = parent_position
-        new_board = prep_new_game_board(parent_raw_board)
         record_position = converted_position(position)
+        record_position[:player] = board_player
+        record_position[:parent] = parent_position
+        new_board = prep_new_game_board(parent_raw_board)
+
         new_board.set_position(board_player, record_position)
         if new_board.winner?
           record_position[:state] = player == board_player ? 'winner' : 'looser'
