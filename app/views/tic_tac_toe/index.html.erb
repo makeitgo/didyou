@@ -45,9 +45,7 @@
   }
 
   function daves_move(element, row, cell) {
-    console.log('100');
     if(element.classList.contains('position_open')) {
-      console.log('200');
       data['dave_player']['row'] = row
       data['dave_player']['cell'] = cell
       call_server();

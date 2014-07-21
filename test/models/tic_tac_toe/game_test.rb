@@ -146,7 +146,6 @@ class GameTest < ActiveSupport::TestCase
 
   private
 
-
   def starting_board
     {
       '0' => ['0','0','0'],
