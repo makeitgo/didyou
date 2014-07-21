@@ -5,8 +5,10 @@ module TicTacToe
     attr_reader :raw_board
     attr_reader :player
     attr_reader :opponent
+    attr_accessor :available_moves
 
     def initialize(player, board)
+      @available_moves = []
       @player = player
       @raw_board = board.clone
       @game_board = TicTacToe::Board.new(board.clone)
@@ -27,7 +29,50 @@ module TicTacToe
 
     def bob
       positions = game_board.open_positions
-      check_positions(raw_board, player, positions)
+      early_position = early_move_strategy(game_board)
+      if early_position.nil?
+        check_positions(raw_board, player, positions)
+      else
+        early_position
+      end
+    end
+
+    def early_move_strategy(game_board)
+      if game_board.open_positions.count == 8
+        if game_board.position_open(game_board.center_position)
+          game_board.center_position
+        else
+          random_corner
+        end
+      elsif game_board.open_positions.count == 9
+        random_first_move
+      end
+    end
+
+    def random_first_move
+      random = Random.new
+      placement = random.rand(1..3)
+      position = {'row' => '0', 'cell' => '0'}
+      if placement == 1
+        random_corner
+      elsif placement == 2
+        random_edge
+      else
+        game_board.center_position
+      end
+    end
+
+    def random_edge
+      random = Random.new
+      position_number = random.rand(1..4)
+      game_board.edge(position_number)
+    end
+
+
+    def random_corner
+      random = Random.new
+      position_number = random.rand(1..4)
+      game_board.corner(position_number)
     end
 
     def check_positions(parent_raw_board, board_player, positions, parent_position = nil)
@@ -35,13 +80,18 @@ module TicTacToe
         record_position = converted_position(position)
         record_position[:player] = board_player
         record_position[:parent] = parent_position
+        record_position[:depth] = parent_position.nil? ? 0 : parent_position[:depth] + 1
         new_board = prep_new_game_board(parent_raw_board)
 
         new_board.set_position(board_player, record_position)
         if new_board.winner?
-          record_position[:state] = player == board_player ? 'winner' : 'looser'
+          if (player == board_player)
+            record_position[:state] = 'winner'
+            available_moves << record_position
+          end
         elsif new_board.closed?
           record_position[:state] = 'closed'
+          available_moves << record_position
         else
           child_board = prep_new_game_board(new_board.current_board)
           # puts "opposite player: #{opposite_player(player)}"
@@ -50,8 +100,8 @@ module TicTacToe
           check_positions(child_board.current_board, opposite_player(board_player), child_board.open_positions, record_position)
           record_position[:state] = 'open'
         end
-        puts record_position
       end
+      puts available_moves
     end
 
     def converted_position(position)

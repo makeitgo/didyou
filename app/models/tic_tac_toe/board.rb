@@ -37,6 +37,41 @@ module TicTacToe
       result
     end
 
+    def center_position
+      {'row' => '1', 'cell' => '1'}
+    end
+
+    def corner(position_number)
+      position = {'row' => '0', 'cell' => '0'}
+      if position_number == 1
+        position
+      elsif position_number == 2
+        position['cell'] = '2'
+      elsif position_number == 3
+        position['row'] = '2'
+      else
+        position['row'] = '2'
+        position['cell'] = '2'
+      end
+      position
+    end
+
+    def edge(position_number)
+      position = {'row' => '0', 'cell' => '0'}
+      if position_number == 1
+        position['cell'] = '1'
+      elsif position_number == 2
+        position['row'] = '2'
+        position['cell'] = '1'
+      elsif position_number == 3
+        position['row'] = '2'
+        position['cell'] = '1'
+      else
+        position['row'] = '1'
+      end
+      position
+    end
+
     def positions_for_player(player)
       positions_by_state(player)
     end
