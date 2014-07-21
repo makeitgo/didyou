@@ -23,11 +23,11 @@ module TicTacToe
     end
 
     def bob
-      positions = prep_new_game_board.open_positions
+      positions = game_board.open_positions
       positions.each do |position|
         new_board = prep_new_game_board
         new_board.set_position(player, converted_position(position))
-        puts new_board.current_board
+        puts raw_board
         if new_board.winner?
           puts 'winner'
         elsif new_board.closed?
@@ -44,7 +44,7 @@ module TicTacToe
 
     def prep_new_game_board
       puts "raw board #{raw_board}"
-      TicTacToe::Board.new(raw_board.clone)
+      TicTacToe::Board.new(manually_create_board)
     end
     #get all open positions for x
     #  set each x and see if it is a winner
@@ -54,5 +54,12 @@ module TicTacToe
     #    if it is a winner remove that o position
     #
 
+    def manually_create_board
+      {
+        '0' => [raw_board['0'][0], raw_board['0'][1], raw_board['0'][2] ],
+        '1' => [raw_board['1'][0], raw_board['1'][1], raw_board['1'][2] ],
+        '2' => [raw_board['2'][0], raw_board['2'][1], raw_board['2'][2] ]
+      }
+    end
   end
 end
