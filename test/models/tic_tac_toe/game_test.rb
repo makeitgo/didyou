@@ -7,6 +7,8 @@ class GameTest < ActiveSupport::TestCase
     @game = TicTacToe::Game.new(@board)
   end
 
+  # TODO Check to make sure all game methods are covered
+
   test 'player x' do
     assert_equal('x', TicTacToe::Game::PLAYER_X)
   end

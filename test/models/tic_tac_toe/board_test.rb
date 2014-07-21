@@ -6,6 +6,8 @@ class BoardTest < ActiveSupport::TestCase
     @board = TicTacToe::Board.new(starting_board)
   end
 
+  # TODO update board tests to test new methods
+
   test 'starting board rows' do
     board = TicTacToe::Board::STARTING_BOARD
     assert_equal(3, board.keys.count)

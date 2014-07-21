@@ -72,6 +72,7 @@ module TicTacToe
       game_board.corner(position_number)
     end
 
+    # TODO need to refactor to also cover blocking moves
     def random_available_position
       positions = game_board.open_positions
       find_available_moves(raw_board, player, positions)
@@ -91,6 +92,8 @@ module TicTacToe
       position_number = random.rand(range)
     end
 
+
+    # TODO does Position need to be its own class?
     def find_available_moves(parent_raw_board, board_player, positions, parent_position = nil)
       positions.each do |position|
         record_position = converted_position(position)
@@ -104,15 +107,14 @@ module TicTacToe
           if (player == board_player)
             record_position[:state] = 'winner'
             available_moves << record_position
+            # TODO need to account for looser as well
+            # because blocking is not covered yet.
           end
         elsif new_board.closed?
           record_position[:state] = 'closed'
           available_moves << record_position
         else
           child_board = prep_new_game_board(new_board.current_board)
-          # puts "opposite player: #{opposite_player(player)}"
-          # puts "positions: #{child_board.open_positions}"
-          # puts "self: #{position}"
           find_available_moves(child_board.current_board, opposite_player(board_player), child_board.open_positions, record_position)
           record_position[:state] = 'open'
         end
@@ -127,13 +129,6 @@ module TicTacToe
     def prep_new_game_board(board)
       TicTacToe::Board.new(board.deep_dup)
     end
-    #get all open positions for x
-    #  set each x and see if it is a winner
-    #  if no winner
-    #    get all open positions for o
-    #    set each o and see if it is a winner
-    #    if it is a winner remove that o position
-    #
 
   end
 end
