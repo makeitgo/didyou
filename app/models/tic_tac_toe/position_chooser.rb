@@ -18,23 +18,38 @@ module TicTacToe
 
     def player=(player)
       @player = player
-      @opponent = 'o' if player == 'x'
-      @opponent = 'x' if player == 'o'
+      @opponent = opposite_player(player)
+    end
+
+    def opposite_player(player)
+      player == 'x' ? 'o' : 'x'
     end
 
     def bob
       positions = game_board.open_positions
+      check_positions(raw_board, player, positions)
+    end
+
+    def check_positions(parent_raw_board, board_player, positions, parent_position = nil)
       positions.each do |position|
-        new_board = prep_new_game_board
-        new_board.set_position(player, converted_position(position))
-        puts raw_board
+        position[:player] = board_player
+        position[:parent] = parent_position
+        new_board = prep_new_game_board(parent_raw_board)
+        record_position = converted_position(position)
+        new_board.set_position(board_player, record_position)
         if new_board.winner?
-          puts 'winner'
+          record_position[:state] = player == board_player ? 'winner' : 'looser'
         elsif new_board.closed?
-          puts 'closed'
+          record_position[:state] = 'closed'
         else
-          puts 'go on'
+          child_board = prep_new_game_board(new_board.current_board)
+          # puts "opposite player: #{opposite_player(player)}"
+          # puts "positions: #{child_board.open_positions}"
+          # puts "self: #{position}"
+          check_positions(child_board.current_board, opposite_player(board_player), child_board.open_positions, record_position)
+          record_position[:state] = 'open'
         end
+        puts record_position
       end
     end
 
@@ -42,9 +57,8 @@ module TicTacToe
       {'row' => position[:row], 'cell' => position[:cell]}
     end
 
-    def prep_new_game_board
-      puts "raw board #{raw_board}"
-      TicTacToe::Board.new(manually_create_board)
+    def prep_new_game_board(board)
+      TicTacToe::Board.new(manually_create_board(board))
     end
     #get all open positions for x
     #  set each x and see if it is a winner
@@ -54,11 +68,11 @@ module TicTacToe
     #    if it is a winner remove that o position
     #
 
-    def manually_create_board
+    def manually_create_board(board)
       {
-        '0' => [raw_board['0'][0], raw_board['0'][1], raw_board['0'][2] ],
-        '1' => [raw_board['1'][0], raw_board['1'][1], raw_board['1'][2] ],
-        '2' => [raw_board['2'][0], raw_board['2'][1], raw_board['2'][2] ]
+        '0' => [board['0'][0], board['0'][1], board['0'][2] ],
+        '1' => [board['1'][0], board['1'][1], board['1'][2] ],
+        '2' => [board['2'][0], board['2'][1], board['2'][2] ]
       }
     end
   end
