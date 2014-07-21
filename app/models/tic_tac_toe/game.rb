@@ -22,9 +22,9 @@ module TicTacToe
     end
 
     def computer_move(action)
-      position_chooser = TicTacToe::PositionChooser.new(action['player'], game_board)
+      position_chooser = TicTacToe::PositionChooser.new(action['player'], game_board.current_board)
       open_position = position_chooser.best_computer_position
-      position = {'row' => open_position[:row], 'cell' => open_position[:cell]}
+      position = {'row' => open_position['row'], 'cell' => open_position['cell']}
       player = action['player']
       return_action = {'player' => player}
       if valid_move?(player, position)

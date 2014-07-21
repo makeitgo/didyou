@@ -98,6 +98,7 @@
       url: '/tic_tac_toe/turn',
       data: data,
       success: function(return_data) {
+        console.log(return_data)
         data = return_data;
         handle_move(return_data);
       }

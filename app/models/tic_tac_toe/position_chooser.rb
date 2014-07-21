@@ -10,11 +10,11 @@ module TicTacToe
     def initialize(player, board)
       @available_moves = []
       @player = player
-      @raw_board = board.clone
-      @game_board = TicTacToe::Board.new(board.clone)
+      @raw_board = board.deep_dup
+      @game_board = TicTacToe::Board.new(board)
     end
 
-    def best_computer_position
+    def best_computer_position_old
       game_board.open_positions[0]
     end
 
@@ -27,17 +27,17 @@ module TicTacToe
       player == 'x' ? 'o' : 'x'
     end
 
-    def bob
-      positions = game_board.open_positions
-      early_position = early_move_strategy(game_board)
+    def best_computer_position
+      early_position = early_move_strategy
       if early_position.nil?
-        check_positions(raw_board, player, positions)
+        available_position = random_available_position
+        {'row' => available_position['row'], 'cell' => available_position['cell']}
       else
         early_position
       end
     end
 
-    def early_move_strategy(game_board)
+    def early_move_strategy
       if game_board.open_positions.count == 8
         if game_board.position_open(game_board.center_position)
           game_board.center_position
@@ -51,7 +51,7 @@ module TicTacToe
 
     def random_first_move
       random = Random.new
-      placement = random.rand(1..3)
+      placement = random_position_number(3)
       position = {'row' => '0', 'cell' => '0'}
       if placement == 1
         random_corner
@@ -63,19 +63,35 @@ module TicTacToe
     end
 
     def random_edge
-      random = Random.new
-      position_number = random.rand(1..4)
+      position_number = random_position_number
       game_board.edge(position_number)
     end
 
-
     def random_corner
-      random = Random.new
-      position_number = random.rand(1..4)
+      position_number = random_position_number
       game_board.corner(position_number)
     end
 
-    def check_positions(parent_raw_board, board_player, positions, parent_position = nil)
+    def random_available_position
+      positions = game_board.open_positions
+      find_available_moves(raw_board, player, positions)
+      position_number = random_position_number(0, available_moves.size)
+      position_tree = available_moves[position_number]
+      parent_in_position_tree(position_tree)
+    end
+
+    def parent_in_position_tree(position_tree)
+      return position_tree if position_tree[:parent].nil?
+      parent_in_position_tree(position_tree[:parent])
+    end
+
+    def random_position_number(start=1, count = 4)
+      range = Range.new(start, count)
+      random = Random.new
+      position_number = random.rand(range)
+    end
+
+    def find_available_moves(parent_raw_board, board_player, positions, parent_position = nil)
       positions.each do |position|
         record_position = converted_position(position)
         record_position[:player] = board_player
@@ -97,11 +113,11 @@ module TicTacToe
           # puts "opposite player: #{opposite_player(player)}"
           # puts "positions: #{child_board.open_positions}"
           # puts "self: #{position}"
-          check_positions(child_board.current_board, opposite_player(board_player), child_board.open_positions, record_position)
+          find_available_moves(child_board.current_board, opposite_player(board_player), child_board.open_positions, record_position)
           record_position[:state] = 'open'
         end
       end
-      puts available_moves
+      available_moves
     end
 
     def converted_position(position)
